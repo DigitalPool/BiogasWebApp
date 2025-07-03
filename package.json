@@ -3,12 +3,22 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@expo/metro-runtime": "~5.0.4",
+    "@react-native-async-storage/async-storage": "2.1.2",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.10.0",
+    "expo": "^53.0.16",
+    "expo-router": "~5.1.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-native-chart-kit": "^6.12.0",
+    "react-native-gesture-handler": "~2.24.0",
+    "react-native-reanimated": "~3.17.4",
+    "react-native-svg": "15.11.2",
+    "react-native-web": "^0.20.0",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
@@ -35,5 +45,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "expo": {
+    "name": "biogas-web-app",
+    "slug": "biogas-web-app",
+    "plugins": [
+      "expo-router"
+    ]
+  },
+  "main": "expo-router/entry"
 }

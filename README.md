@@ -1,3 +1,8 @@
+
+mkdir -p src/{components,pages,utils} && touch src/components/{GasCard.jsx,GasDashboard.jsx,Navbar.jsx} src/pages/{Home.jsx,GasDetail.jsx} src/utils/fetchThingSpeakData.js src/App.jsx
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
