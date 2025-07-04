@@ -9,6 +9,7 @@ import Constants from 'expo-constants';
 import { getAiInsight } from '../utils/getAiInsight';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import GasPieChart from '../components/PieChart';
+import { useLocalSearchParams } from 'expo-router';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -20,8 +21,14 @@ if (!EXPO_PUBLIC_CHANNEL_ID || !EXPO_PUBLIC_THINGSPEAK_API_KEY) {
 
 
 
-export default function GasScreen({ route }) {
-  const gasType = route?.params?.gasType || 'Methane';
+export default function GasScreen() {
+  const { gasType } = useLocalSearchParams();
+  const currentGasType = gasType || 'Methane';
+  
+  // Debug logging
+  console.log('GasScreen - gasType from params:', gasType);
+  console.log('GasScreen - currentGasType:', currentGasType);
+  
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [latest, setLatest] = useState(null);
@@ -37,7 +44,8 @@ export default function GasScreen({ route }) {
     CO: 6,
   };
 
-  const fieldNum = FIELD_MAPPING[gasType];
+  const fieldNum = FIELD_MAPPING[currentGasType];
+  console.log('GasScreen - fieldNum:', fieldNum);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -54,8 +62,10 @@ export default function GasScreen({ route }) {
       }
     };
 
-    fetchData();
-  }, []);
+    if (fieldNum) {
+      fetchData();
+    }
+  }, [fieldNum, currentGasType]);
 
   const handleGetInsight = async () => {
     const valuesOnly = data.map(d => d.value);
@@ -66,7 +76,7 @@ export default function GasScreen({ route }) {
 
     setInsightLoading(true);
     try {
-      const insight = await getAiInsight(gasType, valuesOnly);
+      const insight = await getAiInsight(currentGasType, valuesOnly);
       setAiInsight(insight);
     } catch (aiError) {
       console.error('Error fetching AI insight:', aiError);
@@ -90,7 +100,7 @@ export default function GasScreen({ route }) {
   const handleShare = async () => {
     try {
       await Share.share({
-        message: `${gasType} current level: ${latest || 'N/A'} ppm`,
+        message: `${currentGasType} current level: ${latest || 'N/A'} ppm`,
       });
     } catch (error) {
       alert('Error sharing data');
@@ -101,7 +111,7 @@ export default function GasScreen({ route }) {
     <ScrollView style={styles.container}>
       <View style={styles.headerRow}>
         <Ionicons name="analytics" size={28} color="#004225" />
-        <Text style={styles.title}>{gasType} Dashboard</Text>
+        <Text style={styles.title}>{currentGasType} Dashboard</Text>
         <TouchableOpacity onPress={handleShare}>
           <Ionicons name="share-social" size={24} color="#004225" />
         </TouchableOpacity>
@@ -121,9 +131,9 @@ export default function GasScreen({ route }) {
             </Text>
           </View>
 
-          <Text style={styles.chartLabel}>Composition of {gasType}</Text>
+          <Text style={styles.chartLabel}>Composition of {currentGasType}</Text>
           <View style={styles.chartContainer}>
-            <GasPieChart value={normalized} label={gasType} />
+            <GasPieChart value={normalized} label={currentGasType} />
           </View>
 
           {values.length === 0 ? (
