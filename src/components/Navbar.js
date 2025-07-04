@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
 		paddingVertical: 10,
 		paddingHorizontal: 16,
         paddingTop: 30, // Extra padding for status bar
-        paddingLeft: '5rem',
+        paddingLeft: 20,
+        paddingRight: 20,
 		flexWrap: 'wrap',
 		zIndex: 10,
 	},
@@ -71,9 +72,10 @@ const styles = StyleSheet.create({
 	navTabs: {
 		flexDirection: 'row',
 		flexWrap: 'wrap',
-		justifyContent: 'flex-end',
+		justifyContent: 'center',
 		gap: 10,
-        paddingRight: '5rem',
+		width: '100%',
+		marginTop: 10,
 	},
 	navLink: {
 		color: '#fff',
