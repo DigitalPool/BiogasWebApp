@@ -1,9 +1,13 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView, Linking } from 'react-native';
 import { useRouter } from 'expo-router';
 
 export default function Index() {
 	const router = useRouter();
+
+	const openWebsite = () => {
+		Linking.openURL('https://biogas.czu.cz/en');
+	};
 
 	return (
 		<View style={styles.page}>
@@ -38,7 +42,9 @@ export default function Index() {
 						Our research focuses on sustainable technologies in agriculture, energy, and environmental systems. The Biogas Analyzer
 						app is part of our effort to make bioenergy systems more efficient and intelligent.
 					</Text>
-					<Text style={styles.linkText}>🌐 Learn more: https://www.ftz.czu.cz</Text>
+					<TouchableOpacity onPress={openWebsite}>
+						<Text style={styles.linkText}>🌐 Learn more: https://biogas.czu.cz/en</Text>
+					</TouchableOpacity>
 				</View>
 			</ScrollView>
 
