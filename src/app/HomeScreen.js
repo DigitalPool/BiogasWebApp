@@ -40,82 +40,109 @@ export default function HomeScreen() {
 	return (
 		<ScrollView contentContainerStyle={styles.container}>
 			<Text style={styles.title}>Gas Monitoring</Text>
+
 			{loading ? (
 				<ActivityIndicator size="large" color="#004225" />
 			) : (
 				GAS_FIELDS.map((gas) => {
 					const val = gasData[gas.label];
-					const normalized = Math.min(Math.max(val || 0, 0), 100); // Clamp 0–100
+					const normalized = Math.min(Math.max(val || 0, 0), 100); // Clamp to 0–100
+					const percentage = val != null ? (val / 1_000_000 * 100).toFixed(6) : null;
+
 					return (
-						<View key={gas.label} style={styles.card}>
-							<Text style={styles.cardText}>{gas.label}</Text>
-							<Text style={styles.valueText}>
-								{val != null
-									? `${val} ppm (${(val / 1_000_000 * 100).toFixed(6)}%)`
-									: 'No Data'}
-							</Text>
-							<GasPieChart value={normalized} label={gas.label} />
-							
-							{/* ✅ Add Button Here */}
-							<TouchableOpacity
-								style={styles.viewButton}
-								onPress={() =>
-									router.push({
-										pathname: '/GasScreen',
-										params: { gasType: gas.label },
-									})
-								}
-							>
-								<Text style={styles.viewButtonText}>📈 Click to View Graph</Text>
-							</TouchableOpacity>
-						</View>
+						<TouchableOpacity
+							key={gas.label}
+							style={styles.card}
+							onPress={() =>
+								router.push({
+									pathname: '/GasScreen',
+									params: { gasType: gas.label },
+								})
+							}
+							activeOpacity={0.8}
+						>
+							<View>
+								<Text style={styles.cardText}>{gas.label}</Text>
+								<Text style={styles.valueText}>
+									{val != null ? `${val} ppm (${percentage}%)` : 'No Data'}
+								</Text>
+								<GasPieChart value={normalized} label={gas.label} />
+
+								<View style={styles.graphButtonContainer}>
+									<Text style={styles.graphText}>📈 Click to View Graph</Text>
+								</View>
+							</View>
+						</TouchableOpacity>
 					);
 				})
 			)}
 		</ScrollView>
+
 	);
 }
 
 
 const styles = StyleSheet.create({
   container: {
-    padding: '3%',
-    backgroundColor: '#f4f4f4',
-  },
-  title: {
-    fontSize: 26,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  card: {
-    backgroundColor: '#004225',
-    padding: 20,
+	alignItems: 'center',
+	paddingVertical: 24,
+	paddingHorizontal: '5%',
+	backgroundColor: '#f4f4f4',
+	},
+	
+	title: {
+		fontSize: 26,
+		fontWeight: 'bold',
+		marginBottom: 20,
+	},
 
-    marginBottom: 20,
-    borderRadius: 10,
-  },
-  cardText: {
-    color: '#fff',
-    fontSize: 18,
-    marginBottom: 6,
-  },
-  valueText: {
-    color: '#eee',
-    fontSize: 16,
-    marginBottom: 10,
-  },
-  viewButton: {
-	marginTop: 10,
-	alignSelf: 'flex-end',
-	backgroundColor: '#006d4c',
-	paddingVertical: 6,
-	paddingHorizontal: 12,
-	borderRadius: 6,
+	card: {
+		backgroundColor: '#004225',
+		padding: 20,
+		marginBottom: 20,
+		borderRadius: 10,
+		width: '100%',
+		maxWidth: 500,
+		position: 'relative',
+	},
+
+	cardText: {
+		color: '#fff',
+		fontSize: 18,
+		marginBottom: 6,
+	},
+
+	valueText: {
+		color: '#eee',
+		fontSize: 16,
+		marginBottom: 10,
+	},
+
+	viewButton: {
+		marginTop: 10,
+		alignSelf: 'flex-end',
+		backgroundColor: '#006d4c',
+		paddingVertical: 6,
+		paddingHorizontal: 12,
+		borderRadius: 6,
 	},
 
 	viewButtonText: {
 		color: '#fff',
 		fontSize: 13,
 		fontWeight: '600',
+	},
+	graphButtonContainer: {
+	marginTop: 10,
+	alignItems: 'flex-end',
+	},
+
+	graphText: {
+		color: '#fff',
+		fontSize: 12,
+		backgroundColor: '#006645',
+		paddingVertical: 4,
+		paddingHorizontal: 8,
+		borderRadius: 4,
 	},
 });

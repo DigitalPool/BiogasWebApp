@@ -1,6 +1,6 @@
 // screens/ThingSpeakSettingsScreen.js
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ThingSpeakSettingsScreen() {
@@ -56,7 +56,9 @@ export default function ThingSpeakSettingsScreen() {
         placeholder="e.g. 30"
         keyboardType="numeric"
       />
-      <Button title="Save Settings" onPress={saveSettings} />
+        <TouchableOpacity style={styles.saveButton} onPress={saveSettings}>
+          <Text style={styles.saveButtonText}>Save Settings</Text>
+        </TouchableOpacity>
     </View>
   );
 }
@@ -71,5 +73,20 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 16,
     marginTop: 8,
+  },
+
+    saveButton: {
+	marginTop: 20,
+	alignSelf: 'center',
+	backgroundColor: '#004225',
+	paddingVertical: 10,
+	paddingHorizontal: 20,
+	borderRadius: 6,
+  },
+
+  saveButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
   },
 });

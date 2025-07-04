@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function ReactorProfileScreen() {
@@ -66,14 +66,18 @@ export default function ReactorProfileScreen() {
         onChangeText={setStatus}
         placeholder="active / paused"
       />
-      <Button title="Save Profile" onPress={saveProfile} />
+      <TouchableOpacity style={styles.saveButton} onPress={saveProfile}>
+        <Text style={styles.saveButtonText}>Save Profile</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20 },
+
   label: { fontSize: 16, marginTop: 20, fontWeight: 'bold' },
+
   input: {
     borderWidth: 1,
     borderColor: '#ccc',
@@ -82,4 +86,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginTop: 8,
   },
+
+  saveButton: {
+	marginTop: 20,
+	alignSelf: 'center',
+	backgroundColor: '#004225',
+	paddingVertical: 10,
+	paddingHorizontal: 20,
+	borderRadius: 6,
+  },
+
+  saveButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+
 });

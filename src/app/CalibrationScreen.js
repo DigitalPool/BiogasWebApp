@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	View,
 	Text,
@@ -8,6 +8,7 @@ import {
 	TouchableOpacity,
 	Alert,
 } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CalibrationScreen() {
 	const [calibrationValues, setCalibrationValues] = useState({
@@ -17,13 +18,65 @@ export default function CalibrationScreen() {
 		O2: '',
 	});
 
+	// Load saved calibration values on component mount
+	useEffect(() => {
+		const loadCalibrationValues = async () => {
+			try {
+				const saved = await AsyncStorage.getItem('calibrationValues');
+				if (saved) {
+					setCalibrationValues(JSON.parse(saved));
+				}
+			} catch (error) {
+				console.error('Error loading calibration values:', error);
+			}
+		};
+		loadCalibrationValues();
+	}, []);
+
 	const handleChange = (key, value) => {
 		setCalibrationValues((prev) => ({ ...prev, [key]: value }));
 	};
 
-	const handleSave = () => {
-		console.log('Calibration saved:', calibrationValues);
-		Alert.alert('✅ Success', 'Calibration values saved!');
+	const handleSave = async () => {
+		try {
+			// Validate that all values are numbers
+			const errors = [];
+			Object.entries(calibrationValues).forEach(([gas, value]) => {
+				if (value && isNaN(parseFloat(value))) {
+					errors.push(`${gas} must be a valid number`);
+				}
+			});
+
+			if (errors.length > 0) {
+				Alert.alert('❌ Invalid Input', errors.join('\n'));
+				return;
+			}
+
+			// Save to AsyncStorage
+			await AsyncStorage.setItem('calibrationValues', JSON.stringify(calibrationValues));
+			console.log('Calibration saved:', calibrationValues);
+			Alert.alert('✅ Success', 'Calibration values saved and will be applied to all sensor readings!');
+		} catch (error) {
+			console.error('Error saving calibration values:', error);
+			Alert.alert('❌ Error', 'Failed to save calibration values');
+		}
+	};
+
+	const handleReset = async () => {
+		try {
+			const defaultValues = {
+				CH4: '1.0',
+				CO2: '1.0',
+				H2S: '1.0',
+				O2: '1.0',
+			};
+			setCalibrationValues(defaultValues);
+			await AsyncStorage.setItem('calibrationValues', JSON.stringify(defaultValues));
+			Alert.alert('🔄 Reset Complete', 'All calibration factors reset to 1.0 (no adjustment)');
+		} catch (error) {
+			console.error('Error resetting calibration values:', error);
+			Alert.alert('❌ Error', 'Failed to reset calibration values');
+		}
 	};
 
 	return (
@@ -45,6 +98,10 @@ export default function CalibrationScreen() {
 
 			<TouchableOpacity style={styles.button} onPress={handleSave}>
 				<Text style={styles.buttonText}>💾 Save Calibration</Text>
+			</TouchableOpacity>
+
+			<TouchableOpacity style={styles.resetButton} onPress={handleReset}>
+				<Text style={styles.resetButtonText}>🔄 Reset to Default (1.0)</Text>
 			</TouchableOpacity>
 		</ScrollView>
 	);
@@ -86,6 +143,18 @@ const styles = StyleSheet.create({
 		borderRadius: 8,
 	},
 	buttonText: {
+		color: '#fff',
+		fontWeight: 'bold',
+		fontSize: 16,
+	},
+	resetButton: {
+		marginTop: 15,
+		backgroundColor: '#6c757d',
+		paddingVertical: 12,
+		paddingHorizontal: 24,
+		borderRadius: 8,
+	},
+	resetButtonText: {
 		color: '#fff',
 		fontWeight: 'bold',
 		fontSize: 16,
