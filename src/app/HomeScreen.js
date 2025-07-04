@@ -47,17 +47,28 @@ export default function HomeScreen() {
 					const val = gasData[gas.label];
 					const normalized = Math.min(Math.max(val || 0, 0), 100); // Clamp 0–100
 					return (
-						<TouchableOpacity
-							key={gas.label}
-							style={styles.card}
-							onPress={() => router.push({ pathname: '/GasScreen', params: { gasType: gas.label } })} // ✅ This works
-						>
+						<View key={gas.label} style={styles.card}>
 							<Text style={styles.cardText}>{gas.label}</Text>
 							<Text style={styles.valueText}>
-								{val != null ? `${val} ppm` : 'No Data'}
+								{val != null
+									? `${val} ppm (${(val / 1_000_000 * 100).toFixed(6)}%)`
+									: 'No Data'}
 							</Text>
 							<GasPieChart value={normalized} label={gas.label} />
-						</TouchableOpacity>
+							
+							{/* ✅ Add Button Here */}
+							<TouchableOpacity
+								style={styles.viewButton}
+								onPress={() =>
+									router.push({
+										pathname: '/GasScreen',
+										params: { gasType: gas.label },
+									})
+								}
+							>
+								<Text style={styles.viewButtonText}>📈 Click to View Graph</Text>
+							</TouchableOpacity>
+						</View>
 					);
 				})
 			)}
@@ -93,4 +104,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
+  viewButton: {
+	marginTop: 10,
+	alignSelf: 'flex-end',
+	backgroundColor: '#006d4c',
+	paddingVertical: 6,
+	paddingHorizontal: 12,
+	borderRadius: 6,
+	},
+
+	viewButtonText: {
+		color: '#fff',
+		fontSize: 13,
+		fontWeight: '600',
+	},
 });

@@ -82,7 +82,7 @@ export default function GasScreen({ route }) {
   const labels = data.map((d, i) => (i % 30 === 0 ? new Date(d.time).toLocaleTimeString() : ''));
   const values = data.map((d) => d.value);
 
-  const gasPercentage = latest ? parseFloat(((latest / 10000) * 100).toFixed(2)) : 0;
+  const gasPercentage = latest ? parseFloat(((latest / 1000000) * 100).toFixed(2)) : 0;
 
   const handleShare = async () => {
     try {
