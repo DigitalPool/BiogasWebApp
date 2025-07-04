@@ -52,13 +52,18 @@ export default function ExportDataScreen() {
 			await FileSystem.writeAsStringAsync(fileUri, csvContent);
 
 			// Share the file
-			if (await Sharing.isAvailableAsync()) {
-				await Sharing.shareAsync(fileUri, {
-					mimeType: 'text/csv',
-					dialogTitle: 'Export Biogas Data',
-				});
-				setStatusMsg('Data exported successfully!');
-			} else {
+			try {
+				if (await Sharing.isAvailableAsync()) {
+					await Sharing.shareAsync(fileUri, {
+						mimeType: 'text/csv',
+						dialogTitle: 'Export Biogas Data',
+					});
+					setStatusMsg('Data exported successfully!');
+				} else {
+					throw new Error('File sharing not available');
+				}
+			} catch (sharingError) {
+				console.log('File sharing failed, using fallback:', sharingError);
 				// Fallback to basic share
 				await Share.share({
 					message: csvContent,
