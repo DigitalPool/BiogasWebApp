@@ -1,6 +1,6 @@
 // screens/ExportDataScreen.js
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Share, ActivityIndicator, Alert } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Share, ActivityIndicator, Alert, Platform } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { fetchGasDataHistory } from '../utils/fetchThingSpeakData';
 import * as FileSystem from 'expo-file-system';
@@ -44,32 +44,52 @@ export default function ExportDataScreen() {
 				}
 			}
 
-			// Create file
+			// Create and share file based on platform
 			const fileName = `biogas_data_${new Date().toISOString().slice(0, 10)}.csv`;
-			const fileUri = FileSystem.documentDirectory + fileName;
 			
-			setStatusMsg('Creating CSV file...');
-			await FileSystem.writeAsStringAsync(fileUri, csvContent);
+			if (Platform.OS === 'web') {
+				// Web platform - create downloadable blob
+				setStatusMsg('Preparing download...');
+				const blob = new Blob([csvContent], { type: 'text/csv' });
+				const url = URL.createObjectURL(blob);
+				
+				// Create temporary download link
+				const link = document.createElement('a');
+				link.href = url;
+				link.download = fileName;
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+				URL.revokeObjectURL(url);
+				
+				setStatusMsg('CSV file downloaded successfully!');
+			} else {
+				// Mobile platform - use file system and sharing
+				const fileUri = FileSystem.documentDirectory + fileName;
+				
+				setStatusMsg('Creating CSV file...');
+				await FileSystem.writeAsStringAsync(fileUri, csvContent);
 
-			// Share the file
-			try {
-				if (await Sharing.isAvailableAsync()) {
-					await Sharing.shareAsync(fileUri, {
-						mimeType: 'text/csv',
-						dialogTitle: 'Export Biogas Data',
+				// Share the file
+				try {
+					if (await Sharing.isAvailableAsync()) {
+						await Sharing.shareAsync(fileUri, {
+							mimeType: 'text/csv',
+							dialogTitle: 'Export Biogas Data',
+						});
+						setStatusMsg('Data exported successfully!');
+					} else {
+						throw new Error('File sharing not available');
+					}
+				} catch (sharingError) {
+					console.log('File sharing failed, using fallback:', sharingError);
+					// Fallback to basic share
+					await Share.share({
+						message: csvContent,
+						title: 'Biogas Data Export'
 					});
-					setStatusMsg('Data exported successfully!');
-				} else {
-					throw new Error('File sharing not available');
+					setStatusMsg('Data shared successfully!');
 				}
-			} catch (sharingError) {
-				console.log('File sharing failed, using fallback:', sharingError);
-				// Fallback to basic share
-				await Share.share({
-					message: csvContent,
-					title: 'Biogas Data Export'
-				});
-				setStatusMsg('Data shared successfully!');
 			}
 
 		} catch (err) {
