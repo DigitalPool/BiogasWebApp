@@ -33,39 +33,54 @@ export default function ThingSpeakSettingsScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>ThingSpeak Channel ID</Text>
-      <TextInput
-        style={styles.input}
-        value={channelId}
-        onChangeText={setChannelId}
-        placeholder="Enter Channel ID"
-        keyboardType="numeric"
-      />
-      <Text style={styles.label}>API Key</Text>
-      <TextInput
-        style={styles.input}
-        value={apiKey}
-        onChangeText={setApiKey}
-        placeholder="Enter API Key"
-      />
-      <Text style={styles.label}>Logging Interval (secs)</Text>
-      <TextInput
-        style={styles.input}
-        value={logInterval}
-        onChangeText={setLogInterval}
-        placeholder="e.g. 30"
-        keyboardType="numeric"
-      />
-        <TouchableOpacity style={styles.saveButton} onPress={saveSettings}>
-          <Text style={styles.saveButtonText}>Save Settings</Text>
-        </TouchableOpacity>
+      <View style={styles.formContainer}>
+        <Text style={styles.label}>ThingSpeak Channel ID</Text>
+        <TextInput
+          style={styles.input}
+          value={channelId}
+          onChangeText={setChannelId}
+          placeholder="Enter Channel ID"
+          keyboardType="numeric"
+        />
+        <Text style={styles.label}>API Key</Text>
+        <TextInput
+          style={styles.input}
+          value={apiKey}
+          onChangeText={setApiKey}
+          placeholder="Enter API Key"
+        />
+        <Text style={styles.label}>Logging Interval (secs)</Text>
+        <TextInput
+          style={styles.input}
+          value={logInterval}
+          onChangeText={setLogInterval}
+          placeholder="e.g. 30"
+          keyboardType="numeric"
+        />
+          <TouchableOpacity style={styles.saveButton} onPress={saveSettings}>
+            <Text style={styles.saveButtonText}>Save Settings</Text>
+          </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  label: { fontSize: 16, marginTop: 20, fontWeight: 'bold' },
+  container: { 
+    flex: 1, 
+    padding: 20,
+    alignItems: 'center',
+  },
+  formContainer: {
+    width: '100%',
+    maxWidth: 400,
+  },
+  label: { 
+    fontSize: 16, 
+    marginTop: 20, 
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
   input: {
 	borderColor: '#ccc',
 	borderWidth: 1,
@@ -73,10 +88,9 @@ const styles = StyleSheet.create({
 	paddingVertical: 8,
 	paddingHorizontal: 10,
 	marginBottom: 12,
-	width: '90%',
-	maxWidth: 500,
-	alignSelf: 'center',
+	width: '100%',
 	fontSize: 16,
+	textAlign: 'center',
   },
 
     saveButton: {

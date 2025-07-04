@@ -83,26 +83,28 @@ export default function CalibrationScreen() {
 		<ScrollView contentContainerStyle={styles.container}>
 			<Text style={styles.title}>🛠️ Sensor Calibration</Text>
 
-			{Object.keys(calibrationValues).map((gas) => (
-				<View key={gas} style={styles.inputGroup}>
-					<Text style={styles.label}>{gas} Calibration Factor</Text>
-					<TextInput
-						style={styles.input}
-						value={calibrationValues[gas]}
-						onChangeText={(val) => handleChange(gas, val)}
-						keyboardType="numeric"
-						placeholder={`e.g. 1.25`}
-					/>
-				</View>
-			))}
+			<View style={styles.formContainer}>
+				{Object.keys(calibrationValues).map((gas) => (
+					<View key={gas} style={styles.inputGroup}>
+						<Text style={styles.label}>{gas} Calibration Factor</Text>
+						<TextInput
+							style={styles.input}
+							value={calibrationValues[gas]}
+							onChangeText={(val) => handleChange(gas, val)}
+							keyboardType="numeric"
+							placeholder={`e.g. 1.25`}
+						/>
+					</View>
+				))}
 
-			<TouchableOpacity style={styles.button} onPress={handleSave}>
-				<Text style={styles.buttonText}>💾 Save Calibration</Text>
-			</TouchableOpacity>
+				<TouchableOpacity style={styles.button} onPress={handleSave}>
+					<Text style={styles.buttonText}>💾 Save Calibration</Text>
+				</TouchableOpacity>
 
-			<TouchableOpacity style={styles.resetButton} onPress={handleReset}>
-				<Text style={styles.resetButtonText}>🔄 Reset to Default (1.0)</Text>
-			</TouchableOpacity>
+				<TouchableOpacity style={styles.resetButton} onPress={handleReset}>
+					<Text style={styles.resetButtonText}>🔄 Reset to Default (1.0)</Text>
+				</TouchableOpacity>
+			</View>
 		</ScrollView>
 	);
 }
@@ -117,6 +119,12 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		fontWeight: 'bold',
 		marginBottom: 20,
+		textAlign: 'center',
+	},
+	formContainer: {
+		width: '100%',
+		maxWidth: 400,
+		alignItems: 'center',
 	},
 	inputGroup: {
 		marginBottom: 15,
@@ -126,6 +134,7 @@ const styles = StyleSheet.create({
 		fontSize: 16,
 		marginBottom: 5,
 		color: '#333',
+		textAlign: 'center',
 	},
 	input: {
 		borderWidth: 1,
@@ -134,6 +143,7 @@ const styles = StyleSheet.create({
 		padding: 10,
 		fontSize: 16,
 		width: '100%',
+		textAlign: 'center',
 	},
 	button: {
 		marginTop: 30,

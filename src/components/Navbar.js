@@ -1,9 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, usePathname } from 'expo-router';
 
 export default function Navbar() {
 	const router = useRouter();
+	const pathname = usePathname();
+
+	const getNavLinkStyle = (route) => {
+		const isActive = pathname === route;
+		return [
+			styles.navLink,
+			isActive && styles.navLinkActive
+		];
+	};
 
 	return (
 		<View style={styles.navbar}>
@@ -16,25 +25,25 @@ export default function Navbar() {
 			{/* ✅ Navigation Tabs */}
 			<View style={styles.navTabs}>
 				<TouchableOpacity onPress={() => router.push('/HomeScreen')}>
-					<Text style={styles.navLink}>Dashboard</Text>
+					<Text style={getNavLinkStyle('/HomeScreen')}>Dashboard</Text>
 				</TouchableOpacity>
 				<TouchableOpacity onPress={() => router.push('/AIInsightsScreen')}>
-					<Text style={styles.navLink}>All Gas Insights</Text>
+					<Text style={getNavLinkStyle('/AIInsightsScreen')}>All Gas Insights</Text>
 				</TouchableOpacity>
 				<TouchableOpacity onPress={() => router.push('/CalibrationScreen')}>
-					<Text style={styles.navLink}>Calibration Tools</Text>
+					<Text style={getNavLinkStyle('/CalibrationScreen')}>Calibration Tools</Text>
 				</TouchableOpacity>
 				<TouchableOpacity onPress={() => router.push('/ExportDataScreen')}>
-					<Text style={styles.navLink}>Export Data</Text>
+					<Text style={getNavLinkStyle('/ExportDataScreen')}>Export Data</Text>
 				</TouchableOpacity>
 				<TouchableOpacity onPress={() => router.push('/ReactorProfileScreen')}>
-					<Text style={styles.navLink}>Reactor Profile</Text>
+					<Text style={getNavLinkStyle('/ReactorProfileScreen')}>Reactor Profile</Text>
 				</TouchableOpacity>
 				<TouchableOpacity onPress={() => router.push('/AppInfoScreen')}>
-					<Text style={styles.navLink}>App Info</Text>
+					<Text style={getNavLinkStyle('/AppInfoScreen')}>App Info</Text>
 				</TouchableOpacity>
 				<TouchableOpacity onPress={() => router.push('/ThingSpeakSettingsScreen')}>
-					<Text style={styles.navLink}>ThingSpeak Settings</Text>
+					<Text style={getNavLinkStyle('/ThingSpeakSettingsScreen')}>ThingSpeak Settings</Text>
 				</TouchableOpacity>
 			</View>
 		</View>
@@ -83,5 +92,16 @@ const styles = StyleSheet.create({
 		fontWeight: '600',
 		paddingVertical: 6,
 		paddingHorizontal: 10,
+		borderRadius: 4,
+		transition: 'all 0.3s ease',
+	},
+	navLinkActive: {
+		backgroundColor: '#00cc88',
+		color: '#fff',
+		fontWeight: 'bold',
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.2,
+		shadowRadius: 3,
 	},
 });

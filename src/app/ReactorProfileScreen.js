@@ -36,47 +36,63 @@ export default function ReactorProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Feedstock Description</Text>
-      <TextInput
-        style={styles.input}
-        value={feedstock}
-        onChangeText={setFeedstock}
-        placeholder="e.g. Chicken manure, straw, MCC"
-      />
-      <Text style={styles.label}>Temperature Range (°C)</Text>
-      <TextInput
-        style={styles.input}
-        value={temperature}
-        onChangeText={setTemperature}
-        placeholder="e.g. 35–38"
-        keyboardType="default"
-      />
-      <Text style={styles.label}>Retention Time (days)</Text>
-      <TextInput
-        style={styles.input}
-        value={retentionTime}
-        onChangeText={setRetentionTime}
-        placeholder="e.g. 20"
-        keyboardType="numeric"
-      />
-      <Text style={styles.label}>Current Status</Text>
-      <TextInput
-        style={styles.input}
-        value={status}
-        onChangeText={setStatus}
-        placeholder="active / paused"
-      />
-      <TouchableOpacity style={styles.saveButton} onPress={saveProfile}>
-        <Text style={styles.saveButtonText}>Save Profile</Text>
-      </TouchableOpacity>
+      <View style={styles.formContainer}>
+        <Text style={styles.label}>Feedstock Description</Text>
+        <TextInput
+          style={styles.input}
+          value={feedstock}
+          onChangeText={setFeedstock}
+          placeholder="e.g. Chicken manure, straw, MCC"
+        />
+        <Text style={styles.label}>Temperature Range (°C)</Text>
+        <TextInput
+          style={styles.input}
+          value={temperature}
+          onChangeText={setTemperature}
+          placeholder="e.g. 35–38"
+          keyboardType="default"
+        />
+        <Text style={styles.label}>Retention Time (days)</Text>
+        <TextInput
+          style={styles.input}
+          value={retentionTime}
+          onChangeText={setRetentionTime}
+          placeholder="e.g. 20"
+          keyboardType="numeric"
+        />
+        <Text style={styles.label}>Current Status</Text>
+        <TextInput
+          style={styles.input}
+          value={status}
+          onChangeText={setStatus}
+          placeholder="active / paused"
+        />
+        <TouchableOpacity style={styles.saveButton} onPress={saveProfile}>
+          <Text style={styles.saveButtonText}>Save Profile</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
+  container: { 
+    flex: 1, 
+    padding: 20,
+    alignItems: 'center',
+  },
 
-  label: { fontSize: 16, marginTop: 20, fontWeight: 'bold' },
+  formContainer: {
+    width: '100%',
+    maxWidth: 400,
+  },
+
+  label: { 
+    fontSize: 16, 
+    marginTop: 20, 
+    fontWeight: 'bold',
+    textAlign: 'center',
+  },
 
   input: {
 	borderColor: '#ccc',

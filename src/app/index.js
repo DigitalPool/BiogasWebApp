@@ -20,11 +20,21 @@ export default function Index() {
 				</Text>
 
 				<View style={styles.features}>
-					<Text style={styles.feature}>Live Gas Readings from Sensors</Text>
-					<Text style={styles.feature}>Historical Graphs and Charts</Text>
-					<Text style={styles.feature}>AI-Generated Operational Insights</Text>
-					<Text style={styles.feature}>Sensor Calibration Tools</Text>
-					<Text style={styles.feature}>Data Export in CSV Format</Text>
+					<View style={styles.featureItem}>
+						<Text style={styles.feature}>Live Gas Readings from Sensors</Text>
+					</View>
+					<View style={styles.featureItem}>
+						<Text style={styles.feature}>Historical Graphs and Charts</Text>
+					</View>
+					<View style={styles.featureItem}>
+						<Text style={styles.feature}>AI-Generated Operational Insights</Text>
+					</View>
+					<View style={styles.featureItem}>
+						<Text style={styles.feature}>Sensor Calibration Tools</Text>
+					</View>
+					<View style={styles.featureItem}>
+						<Text style={styles.feature}>Data Export in CSV Format</Text>
+					</View>
 				</View>
 
 				<TouchableOpacity style={styles.button} onPress={() => router.push('/HomeScreen')}>
@@ -128,25 +138,28 @@ const styles = StyleSheet.create({
 		marginBottom: 30,
 		width: '100%',
 		maxWidth: 400,
+		alignItems: 'center',
+	},
+	featureItem: {
+		width: '100%',
+		marginVertical: 4,
+		backgroundColor: '#f8f9fa',
+		borderRadius: 8,
+		elevation: 2,
+		shadowColor: '#000',
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 0.1,
+		shadowRadius: 3,
+		borderWidth: 1,
+		borderColor: '#e9ecef',
 	},
 	feature: {
 		fontSize: 15,
 		color: '#333',
-		marginVertical: 4,
 		textAlign: 'center',
 		paddingHorizontal: 10,
-		backgroundColor: '#eaeaea',
-		paddingVertical: 8,
-		borderRadius: 6,
-		elevation: 1,
-		shadowColor: '#000',
-		shadowOffset: { width: 0, height: 1 },
-		shadowOpacity: 0.1,
-		shadowRadius: 2,
-		overflow: 'hidden',
-		borderWidth: 1,
-		borderColor: '#ddd',
-		transition: 'background-color 0.3s ease',	
+		paddingVertical: 12,
+		fontWeight: '500',
 	},
 	button: {
 		backgroundColor: '#004225',

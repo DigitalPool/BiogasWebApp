@@ -54,9 +54,11 @@ export default function AiInsightsScreen() {
 			<Text style={styles.title}>Insights for All Gases</Text>
 
 			{!fetched && (
-				<TouchableOpacity style={styles.button} onPress={fetchInsights} disabled={loading}>
-					<Text style={styles.buttonText}>{loading ? 'Loading Insights...' : 'Read All Insights'}</Text>
-				</TouchableOpacity>
+				<View style={styles.buttonContainer}>
+					<TouchableOpacity style={styles.button} onPress={fetchInsights} disabled={loading}>
+						<Text style={styles.buttonText}>{loading ? 'Loading Insights...' : 'Read All Insights'}</Text>
+					</TouchableOpacity>
+				</View>
 			)}
 
 			{loading && (
@@ -81,6 +83,7 @@ const styles = StyleSheet.create({
 	container: {
 		padding: 20,
 		backgroundColor: '#ffffff',
+		alignItems: 'center',
 	},
 	loadingContainer: {
 		flex: 1,
@@ -92,17 +95,24 @@ const styles = StyleSheet.create({
 		fontWeight: 'bold',
 		color: '#004225',
 		marginBottom: 20,
+		textAlign: 'center',
+	},
+	buttonContainer: {
+		alignItems: 'center',
+		marginBottom: 20,
+		width: '100%',
 	},
 	button: {
 		backgroundColor: '#004225',
-		padding: 12,
+		paddingVertical: 10,
+		paddingHorizontal: 20,
 		borderRadius: 8,
 		alignItems: 'center',
-		marginBottom: 20,
+		maxWidth: 180,
 	},
 	buttonText: {
 		color: '#fff',
-		fontSize: 16,
+		fontSize: 14,
 		fontWeight: 'bold',
 	},
 	insightCard: {
@@ -111,15 +121,21 @@ const styles = StyleSheet.create({
 		borderRadius: 10,
 		marginBottom: 15,
 		elevation: 1,
+		width: '100%',
+		maxWidth: 600,
+		alignSelf: 'center',
 	},
 	gasTitle: {
 		fontSize: 18,
 		fontWeight: 'bold',
 		color: '#004225',
 		marginBottom: 8,
+		textAlign: 'center',
 	},
 	insightText: {
 		fontSize: 15,
 		color: '#333',
+		textAlign: 'center',
+		lineHeight: 22,
 	},
 });
