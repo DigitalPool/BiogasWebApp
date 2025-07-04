@@ -25,8 +25,8 @@ export default function GasPieChart({ value, label }) {
   return (
     <PieChart
       data={chartData}
-      width={screenWidth * 0.4}
-      height={120}
+      width={Math.min(screenWidth * 0.8, 300)}
+      height={200}
       chartConfig={{
         color: () => `#00cc88`,
       }}

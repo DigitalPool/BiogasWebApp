@@ -1,13 +1,14 @@
 // screens/GasScreen.js
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity, Share } from 'react-native';
-import { LineChart, PieChart } from 'react-native-chart-kit';
+import { LineChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
 import { fetchGasDataHistory } from '../utils/fetchThingSpeakData';
 import { Ionicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
 import { getAiInsight } from '../utils/getAiInsight';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import GasPieChart from '../components/PieChart';
 
 const screenWidth = Dimensions.get('window').width;
 
@@ -82,6 +83,8 @@ export default function GasScreen({ route }) {
   const labels = data.map((d, i) => (i % 30 === 0 ? new Date(d.time).toLocaleTimeString() : ''));
   const values = data.map((d) => d.value);
 
+  // Use same normalization logic as dashboard
+  const normalized = Math.min(Math.max(latest || 0, 0), 100); // Clamp to 0–100
   const gasPercentage = latest ? parseFloat(((latest / 1000000) * 100).toFixed(2)) : 0;
 
   const handleShare = async () => {
@@ -93,23 +96,6 @@ export default function GasScreen({ route }) {
       alert('Error sharing data');
     }
   };
-
-  const pieData = [
-    {
-      name: `${gasType} (${gasPercentage}%)`,
-      population: gasPercentage,
-      color: '#00cc88',
-      legendFontColor: '#333',
-      legendFontSize: 12,
-    },
-    {
-      name: 'Other Gases',
-      population: 100 - gasPercentage,
-      color: '#dddddd',
-      legendFontColor: '#333',
-      legendFontSize: 12,
-    },
-  ];
 
   return (
     <ScrollView style={styles.container}>
@@ -128,63 +114,56 @@ export default function GasScreen({ route }) {
           <View style={styles.metricCard}>
             <Text style={styles.metricLabel}>Current Level</Text>
             <Text style={styles.metricValue}>
-              {latest != null ? `${latest} ppm (${gasPercentage}%)` : 'N/A'}
+              {latest != null ? `${latest} ppm` : 'N/A'}
+            </Text>
+            <Text style={styles.metricPercentage}>
+              {latest != null ? `(${gasPercentage}%)` : ''}
             </Text>
           </View>
 
           <Text style={styles.chartLabel}>Composition of {gasType}</Text>
-          <PieChart
-            data={pieData}
-            width={screenWidth - 40}
-            height={160}
-            chartConfig={{
-              backgroundColor: 'transparent',
-              color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-              labelColor: () => '#333',
-            }}
-            accessor="population"
-            backgroundColor="transparent"
-            paddingLeft="15"
-            hasLegend={false}
-            center={[10, 0]}
-          />
+          <View style={styles.chartContainer}>
+            <GasPieChart value={normalized} label={gasType} />
+          </View>
 
           {values.length === 0 ? (
             <Text style={styles.noDataText}>No data available for this gas</Text>
           ) : (
             <>
               <Text style={styles.chartLabel}>Last 100 readings</Text>
-              <LineChart
-                data={{
-                  labels,
-                  datasets: [{ data: values }],
-                }}
-                width={screenWidth - 40}
-                height={250}
-                yAxisSuffix=" ppm"
-                chartConfig={{
-                    backgroundColor: '#ffffff',
-                    backgroundGradientFrom: '#ffffff',
-                    backgroundGradientTo: '#ffffff',
-                    decimalPlaces: 1,
-                    color: (opacity = 1) => `rgba(0, 66, 37, ${opacity})`,
-                    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-                    propsForBackgroundLines: {
-                      stroke: '#',
-                    },
-                    propsForDots: {
-                      r: '4',
-                      strokeWidth: '2',
-                      stroke: '#00cc88',
-                    },
+              <View style={styles.chartContainer}>
+                <LineChart
+                  data={{
+                    labels,
+                    datasets: [{ data: values }],
                   }}
-                bezier
-                style={{
-                  marginVertical: 12,
-                  borderRadius: 16,
-                  backgroundColor: '#ffffff',
-                }}
-              />
+                  width={Math.min(screenWidth - 20, 800)}
+                  height={300}
+                  yAxisSuffix=" ppm"
+                  chartConfig={{
+                      backgroundColor: '#ffffff',
+                      backgroundGradientFrom: '#ffffff',
+                      backgroundGradientTo: '#ffffff',
+                      decimalPlaces: 1,
+                      color: (opacity = 1) => `rgba(0, 66, 37, ${opacity})`,
+                      labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                      propsForBackgroundLines: {
+                        stroke: '#',
+                      },
+                      propsForDots: {
+                        r: '4',
+                        strokeWidth: '2',
+                        stroke: '#00cc88',
+                      },
+                    }}
+                  bezier
+                  style={{
+                    marginVertical: 12,
+                    borderRadius: 16,
+                    backgroundColor: '#ffffff',
+                  }}
+                />
+              </View>
             </>
           )}
 
@@ -227,22 +206,39 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 20,
     elevation: 2,
+    alignItems: 'center',
   },
   metricLabel: {
     color: '#bbb',
     fontSize: 16,
+    textAlign: 'center',
   },
   metricValue: {
     color: '#fff',
     fontSize: 32,
     fontWeight: 'bold',
     marginTop: 4,
+    textAlign: 'center',
+  },
+  metricPercentage: {
+    color: '#fff',
+    fontSize: 18,
+    marginTop: 4,
+    textAlign: 'center',
+    opacity: 0.8,
   },
   chartLabel: {
     fontSize: 16,
     color: '#333',
     marginBottom: 8,
     marginTop: 12,
+    textAlign: 'center',
+  },
+  chartContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: 20,
+    width: '100%',
   },
   noDataText: {
     color: '#999',
@@ -268,14 +264,18 @@ const styles = StyleSheet.create({
   },
   insightButton: {
     backgroundColor: '#004225',
-    padding: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
     borderRadius: 6,
     alignItems: 'center',
+    alignSelf: 'center',
     marginTop: 8,
+    maxWidth: 150,
   },
   insightButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+    fontSize: 14,
   },
   insightText: {
     fontSize: 15,
