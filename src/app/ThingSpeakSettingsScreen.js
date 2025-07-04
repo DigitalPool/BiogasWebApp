@@ -67,12 +67,16 @@ const styles = StyleSheet.create({
   container: { flex: 1, padding: 20 },
   label: { fontSize: 16, marginTop: 20, fontWeight: 'bold' },
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 6,
-    padding: 10,
-    fontSize: 16,
-    marginTop: 8,
+	borderColor: '#ccc',
+	borderWidth: 1,
+	borderRadius: 5,
+	paddingVertical: 8,
+	paddingHorizontal: 10,
+	marginBottom: 12,
+	width: '90%',
+	maxWidth: 500,
+	alignSelf: 'center',
+	fontSize: 16,
   },
 
     saveButton: {

@@ -88,8 +88,9 @@ const styles = StyleSheet.create({
 	paddingVertical: 24,
 	paddingHorizontal: '5%',
 	backgroundColor: '#f4f4f4',
+	paddingBottom: 20,
 	},
-	
+
 	title: {
 		fontSize: 26,
 		fontWeight: 'bold',
@@ -99,12 +100,14 @@ const styles = StyleSheet.create({
 	card: {
 		backgroundColor: '#004225',
 		padding: 20,
-		marginBottom: 20,
 		borderRadius: 10,
-		width: '100%',
+		width: '70%',
 		maxWidth: 500,
-		position: 'relative',
+		marginVertical: 10,
+		alignSelf: 'center',
+		alignItems: 'center',
 	},
+
 
 	cardText: {
 		color: '#fff',

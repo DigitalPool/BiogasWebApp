@@ -49,10 +49,16 @@ export default function AppInfoScreen() {
 
 const styles = StyleSheet.create({
 	container: {
-		padding: 20,
-		backgroundColor: '#fff',
+		marginTop: 40,
+		paddingHorizontal: 20,
 		alignItems: 'center',
-		justifyContent: 'flex-start',
+		maxWidth: 600,
+		width: '100%',
+		alignSelf: 'center',
+		// padding: 20,
+		// backgroundColor: '#fff',
+		// alignItems: 'center',
+		// justifyContent: 'flex-start',
 	},
 	title: {
 		fontSize: 24,
