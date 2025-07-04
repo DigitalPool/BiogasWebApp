@@ -46,7 +46,7 @@ export default function HomeScreen() {
 			) : (
 				GAS_FIELDS.map((gas) => {
 					const val = gasData[gas.label];
-					const normalized = Math.min(Math.max(val || 0, 0), 100); // Clamp to 0–100
+					const normalized = Math.min(Math.max(val || 0, 0), 100);
 					const percentage = val != null ? (val / 1_000_000 * 100).toFixed(6) : null;
 
 					return (
@@ -101,8 +101,9 @@ const styles = StyleSheet.create({
 		backgroundColor: '#004225',
 		padding: 20,
 		borderRadius: 10,
-		width: '70%',
+		width: '95%',
 		maxWidth: 500,
+		minWidth: 320,
 		marginVertical: 10,
 		alignSelf: 'center',
 		alignItems: 'center',
@@ -113,12 +114,14 @@ const styles = StyleSheet.create({
 		color: '#fff',
 		fontSize: 18,
 		marginBottom: 6,
+		textAlign: 'center',
 	},
 
 	valueText: {
 		color: '#eee',
 		fontSize: 16,
 		marginBottom: 10,
+		textAlign: 'center',
 	},
 
 	viewButton: {
@@ -136,8 +139,9 @@ const styles = StyleSheet.create({
 		fontWeight: '600',
 	},
 	graphButtonContainer: {
-	marginTop: 10,
-	alignItems: 'flex-end',
+		marginTop: 10,
+		alignItems: 'center',
+		width: '100%',
 	},
 
 	graphText: {
@@ -147,5 +151,6 @@ const styles = StyleSheet.create({
 		paddingVertical: 4,
 		paddingHorizontal: 8,
 		borderRadius: 4,
+		textAlign: 'center',
 	},
 });
