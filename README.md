@@ -1,75 +1,137 @@
+Here’s a comprehensive `README.md` file for your **BiogasMobileApp**, including an overview, key features, setup instructions, environment variable handling, and known issues:
 
-mkdir -p src/{components,pages,utils} && touch src/components/{GasCard.jsx,GasDashboard.jsx,Navbar.jsx} src/pages/{Home.jsx,GasDetail.jsx} src/utils/fetchThingSpeakData.js src/App.jsx
+---
 
+````markdown
+# 🔬 BiogasMobileApp (Web + Native)
 
+A cross-platform biogas gas monitoring application that visualizes gas sensor data from **ThingSpeak** and offers **AI-powered insights** for biological diagnosis and gas behavior interpretation. Built using **React Native (Expo Router)** for both mobile and web platforms.
 
-# Getting Started with Create React App
+![screenshot](https://user-images.githubusercontent.com/your-image-link.png) <!-- Optional image -->
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+---
 
-## Available Scripts
+## 📦 Key Features
 
-In the project directory, you can run:
+- 📊 Real-time gas monitoring dashboard (CH₄, CO₂, H₂S, H₂, O₂, CO)
+- 🧠 AI insights based on substrate and reactor condition (via OpenAI API)
+- 🌐 Web + Mobile support using `expo-router`
+- 🔁 Historical trends pulled from **ThingSpeak**
+- ⚙️ Sensor calibration, export options (coming soon)
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## ⚙️ Technologies Used
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- **React Native** via [Expo](https://expo.dev)
+- **Expo Router**
+- **React Native Web**
+- **ThingSpeak API**
+- **OpenAI GPT-3.5 Turbo**
+- **AsyncStorage** for saving local reactor settings
 
-### `npm test`
+---
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 🚀 Getting Started
 
-### `npm run build`
+### ✅ 1. Clone the Repo
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+git clone https://github.com/DigitalPool/BiogasMobileApp.git
+cd BiogasMobileApp
+````
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### ✅ 2. Fix any npm permission issues
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+> Run the following to fix root-owned `.npm` cache (only needed once):
 
-### `npm run eject`
+```bash
+sudo chown -R $(whoami) ~/.npm
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+---
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### ✅ 3. Install Dependencies
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm install
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+### ✅ 4. Setup Environment Variables
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Create a `.env` file in the root folder:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+```env
+EXPO_PUBLIC_CHANNEL_ID=your_thingspeak_channel_id
+EXPO_PUBLIC_THINGSPEAK_API_KEY=your_thingspeak_read_key
+EXPO_PUBLIC_OPENAI_API_KEY=your_openai_key
+```
 
-### Code Splitting
+You can find these under your [ThingSpeak channel settings](https://thingspeak.com) and [OpenAI API keys](https://platform.openai.com/account/api-keys).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+---
 
-### Analyzing the Bundle Size
+### ✅ 5. Install Dotenv Package (Required)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```bash
+npm install dotenv
+```
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+### ✅ 6. Run the App Locally
 
-### Advanced Configuration
+```bash
+npx expo start --web
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Once Metro Bundler starts, press:
 
-### Deployment
+* `w` → for Web
+* `a` or `i` → for Android/iOS simulators
+* `Ctrl+C` to quit
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+The web version will be available at [http://localhost:8081](http://localhost:8081).
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## ⚠️ Known Issues
+
+* **Dark Mode Chart Bug**: The charts may render black in dark mode due to `recharts` and theme conflicts. Use light mode for now.
+* **Outdated Dependencies**: Several deprecated packages may show warnings. App still works. Clean-up and upgrade will follow.
+
+---
+
+## ✨ Planned Features
+
+* Gas threshold alerts with push/email notifications
+* Export as CSV or PDF
+* Enhanced dashboard UI
+* Feedstock-specific predictive analysis
+
+---
+
+## 👥 Contributors
+
+* AbdulAzeez Shobajo – [LinkedIn](https://linkedin.com/in/abdulazeez-shobajo-304171138/) | [Portfolio](https://azeezshobajo.vercel.app/)
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+## 🧪 Want to Contribute?
+
+Pull requests are welcome! Please fork this repo and submit a PR. For major changes, open an issue first to discuss what you’d like to change.
+
+```
+
+---
+
+Let me know if you’d like me to auto-create this file in your repo or assist with GitHub Pages/Vercel deployment.
+```
