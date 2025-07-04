@@ -14,10 +14,12 @@ export default function ExportDataScreen() {
 	const [statusMsg, setStatusMsg] = useState('');
 
 	const FIELD_MAPPING = {
-		CH4: 1,
-		CO2: 2,
-		H2S: 3,
-		O2: 4,
+		Methane: 1,
+		H2S: 2,
+		Oxygen: 3,
+		Hydrogen: 4,
+		CO2: 5,
+		CO: 6,
 	};
 
 	const exportData = async () => {

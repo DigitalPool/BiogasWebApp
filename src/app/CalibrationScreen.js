@@ -12,10 +12,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function CalibrationScreen() {
 	const [calibrationValues, setCalibrationValues] = useState({
-		CH4: '',
-		CO2: '',
+		Methane: '',
 		H2S: '',
-		O2: '',
+		Oxygen: '',
+		Hydrogen: '',
+		CO2: '',
+		CO: '',
 	});
 
 	// Load saved calibration values on component mount
@@ -65,10 +67,12 @@ export default function CalibrationScreen() {
 	const handleReset = async () => {
 		try {
 			const defaultValues = {
-				CH4: '1.0',
-				CO2: '1.0',
+				Methane: '1.0',
 				H2S: '1.0',
-				O2: '1.0',
+				Oxygen: '1.0',
+				Hydrogen: '1.0',
+				CO2: '1.0',
+				CO: '1.0',
 			};
 			setCalibrationValues(defaultValues);
 			await AsyncStorage.setItem('calibrationValues', JSON.stringify(defaultValues));

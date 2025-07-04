@@ -12,19 +12,23 @@ export async function getCalibrationValues() {
     }
     // Return default calibration factors (1.0 = no adjustment)
     return {
-      CH4: '1.0',
-      CO2: '1.0',
+      Methane: '1.0',
       H2S: '1.0',
-      O2: '1.0',
+      Oxygen: '1.0',
+      Hydrogen: '1.0',
+      CO2: '1.0',
+      CO: '1.0',
     };
   } catch (error) {
     console.error('Error loading calibration values:', error);
     // Return default values on error
     return {
-      CH4: '1.0',
-      CO2: '1.0',
+      Methane: '1.0',
       H2S: '1.0',
-      O2: '1.0',
+      Oxygen: '1.0',
+      Hydrogen: '1.0',
+      CO2: '1.0',
+      CO: '1.0',
     };
   }
 }
@@ -57,10 +61,12 @@ export function applyCalibrationType(rawValue, gasType, calibrationValues) {
  */
 export function getGasTypeFromField(fieldNum) {
   const fieldMapping = {
-    1: 'CH4',
-    2: 'CO2', 
-    3: 'H2S',
-    4: 'O2',
+    1: 'Methane',
+    2: 'H2S', 
+    3: 'Oxygen',
+    4: 'Hydrogen',
+    5: 'CO2',
+    6: 'CO',
     // Add more mappings as needed for your ThingSpeak setup
   };
   
