@@ -24,6 +24,9 @@ export default function Navbar() {
 
 			{/* ✅ Navigation Tabs */}
 			<View style={styles.navTabs}>
+				<TouchableOpacity onPress={() => router.push('/')}>
+					<Text style={getNavLinkStyle('/')}>Home</Text>
+				</TouchableOpacity>
 				<TouchableOpacity onPress={() => router.push('/HomeScreen')}>
 					<Text style={getNavLinkStyle('/HomeScreen')}>Dashboard</Text>
 				</TouchableOpacity>
